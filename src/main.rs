@@ -1,7 +1,5 @@
 use sbm::{Category, Sbm, Bookmark, Header};
-
 use rand::{seq::SliceRandom, Rng};
-use std::fmt::Write;
 
 // Consider using lazy_static for these constants
 const NAMES: [&str; 55] = [
@@ -86,12 +84,12 @@ fn random_bookmark(rng: &mut impl Rng) -> Bookmark {
     Bookmark {
         name: name.to_string(),
         description: description.to_string(),
-        url: "https://".to_owned() + name.to_lowercase().replace(" ", "").as_str() + ".com",
+        url: "https://".to_owned() + name.to_lowercase().replace(' ', "").as_str() + ".com",
     }
 }
 
 fn random_category(rng: &mut impl Rng) -> Category {
-    let name = NAMES.choose(rng).unwrap();
+    let name = NAMES.choose(rng).unwrap().to_string();
     let icon = if rng.gen_bool(0.5) {
         Some(ICONS.choose(rng).unwrap().to_string())
     } else {
@@ -103,8 +101,8 @@ fn random_category(rng: &mut impl Rng) -> Category {
     }
     Category {
         header: Header {
-            name: name.to_string(),
-            icon: icon,
+            name,
+            icon
         },
         bookmarks,
     }
